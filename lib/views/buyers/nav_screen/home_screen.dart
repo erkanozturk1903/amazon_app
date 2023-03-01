@@ -1,4 +1,5 @@
 import 'package:amazon_app/views/buyers/nav_screen/widgets/banner_widget.dart';
+import 'package:amazon_app/views/buyers/nav_screen/widgets/category_text.dart';
 import 'package:amazon_app/views/buyers/nav_screen/widgets/search_input_widget.dart';
 import 'package:amazon_app/views/buyers/nav_screen/widgets/welcome_text_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WelcomeText(),
         const SizedBox(
@@ -16,6 +18,7 @@ class HomeScreen extends StatelessWidget {
         ),
         SearchInput(),
         BannerWidget(),
+        CategoryText()
       ],
     );
   }
