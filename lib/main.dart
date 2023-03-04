@@ -1,4 +1,5 @@
 import 'package:amazon_app/firebase_options.dart';
+import 'package:amazon_app/views/buyers/auth/register_screen.dart';
 import 'package:amazon_app/views/buyers/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Brand-Bold'
       ),
-      home: const MainScreen(),
+      home: RegisterScreen(),
     );
   }
 }
