@@ -1,4 +1,5 @@
 import 'package:amazon_app/firebase_options.dart';
+import 'package:amazon_app/vendor/views/screens/main_vendor_screen.dart';
 import 'package:amazon_app/views/buyers/auth/register_screen.dart';
 import 'package:amazon_app/views/buyers/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Brand-Bold'
       ),
-      home: RegisterScreen(),
+      home: MainVendorScreen(),
     );
   }
 }
