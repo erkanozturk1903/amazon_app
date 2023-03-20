@@ -1,3 +1,8 @@
+import 'package:amazon_app/vendor/views/screens/earnings_screen.dart';
+import 'package:amazon_app/vendor/views/screens/edit_product_screen.dart';
+import 'package:amazon_app/vendor/views/screens/upload_screen.dart';
+import 'package:amazon_app/vendor/views/screens/vendor_logout_screen.dart';
+import 'package:amazon_app/vendor/views/screens/vendor_order_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +16,13 @@ class MainVendorScreen extends StatefulWidget {
 
 class _MainVendorScreenState extends State<MainVendorScreen> {
  int _pageIndex = 0;
+ List<Widget> _pages = [
+   EarningsScreen(),
+   UploadScreen(),
+   EditProductScreen(),
+   VendorOrderScreen(),
+   VendorLogoutScreen()
+ ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +59,7 @@ class _MainVendorScreenState extends State<MainVendorScreen> {
           ),
         ],
       ),
+      body: _pages[_pageIndex],
     );
   }
 }
