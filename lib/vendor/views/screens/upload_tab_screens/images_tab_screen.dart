@@ -1,7 +1,12 @@
 import 'dart:io';
 
+import 'package:amazon_app/provider/product_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class ImagesTabScreen extends StatefulWidget {
   ImagesTabScreen({Key? key}) : super(key: key);
@@ -12,8 +17,10 @@ class ImagesTabScreen extends StatefulWidget {
 
 class _ImagesTabScreenState extends State<ImagesTabScreen> {
   final ImagePicker picker = ImagePicker();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<File> _image = [];
+  List<String> _imageUrlList = [];
 
   chooseImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -30,6 +37,7 @@ class _ImagesTabScreenState extends State<ImagesTabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ProductProvider _productProvider = Provider.of<ProductProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -61,8 +69,23 @@ class _ImagesTabScreenState extends State<ImagesTabScreen> {
           ),
           SizedBox(height: 30,),
           TextButton(
-            onPressed: (){},
-            child: Text('Yükle'),
+            onPressed: ()async{
+              EasyLoading.show(status: 'Resimler Kaydediliyor');
+              for(var img in _image){
+               Reference ref = _storage.ref().child('productImage')
+                    .child(Uuid().v4());
+               await ref.putFile(img).whenComplete(()async {
+                 await ref.getDownloadURL().then((value){
+                   setState(() {
+                     _imageUrlList.add(value);
+                     _productProvider.getFormData(imageUrlList: _imageUrlList);
+                     EasyLoading.dismiss();
+                   });
+                 });
+               });
+              }
+            },
+            child:_image.isNotEmpty ? Text('Yükle') : Text(''),
           )
         ],
       ),

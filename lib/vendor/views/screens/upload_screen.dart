@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UploadScreen extends StatelessWidget {
-  const UploadScreen({Key? key}) : super(key: key);
+   UploadScreen({Key? key}) : super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,45 +17,53 @@ class UploadScreen extends StatelessWidget {
         Provider.of<ProductProvider>(context);
     return DefaultTabController(
       length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.yellow.shade900,
-          elevation: 0,
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                child: Text('Genel'),
-              ),
-              Tab(
-                child: Text('Kargo'),
-              ),
-              Tab(
-                child: Text('Özellikler'),
-              ),
-              Tab(
-                child: Text('Resim'),
-              ),
+      child: Form(
+        key: _formKey,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.yellow.shade900,
+            elevation: 0,
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  child: Text('Genel'),
+                ),
+                Tab(
+                  child: Text('Kargo'),
+                ),
+                Tab(
+                  child: Text('Özellikler'),
+                ),
+                Tab(
+                  child: Text('Resim'),
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              GeneralScreen(),
+              ShippingScreen(),
+              AttributesTabScreens(),
+              ImagesTabScreen()
             ],
           ),
-        ),
-        body: TabBarView(
-          children: [
-            GeneralScreen(),
-            ShippingScreen(),
-            AttributesTabScreens(),
-            ImagesTabScreen()
-          ],
-        ),
-        bottomSheet: ElevatedButton(
-          onPressed: () {
-            print(_productProvider.productData['productName']);
-            print(_productProvider.productData['productPrice']);
-            print(_productProvider.productData['quantity']);
-            print(_productProvider.productData['category']);
-            print(_productProvider.productData['description']);
-            print(_productProvider.productData['scheduleDate']);
-          },
-          child: Text('Kaydet'),
+          bottomSheet: ElevatedButton(
+            onPressed: () {
+              if(_formKey.currentState!.validate()){
+                print(_productProvider.productData['productName']);
+                print(_productProvider.productData['productPrice']);
+                print(_productProvider.productData['quantity']);
+                print(_productProvider.productData['category']);
+                print(_productProvider.productData['description']);
+                print(_productProvider.productData['imageUrlList']);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.yellow.shade900,
+            ),
+            child: Text('Kaydet'),
+          ),
         ),
       ),
     );
