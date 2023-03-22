@@ -5,6 +5,7 @@ import 'package:amazon_app/vendor/views/screens/upload_tab_screens/general_scree
 import 'package:amazon_app/vendor/views/screens/upload_tab_screens/images_tab_screen.dart';
 import 'package:amazon_app/vendor/views/screens/upload_tab_screens/shipping_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -74,6 +75,7 @@ class UploadScreen extends StatelessWidget {
                       _productProvider.productData['shippingCharge'],
                   'brandName': _productProvider.productData['brandName'],
                   'sizeList': _productProvider.productData['sizeList'],
+                  'vendorId' : FirebaseAuth.instance.currentUser!.uid,
                 }).whenComplete(() {
                   _productProvider.clearData();
                   _formKey.currentState!.reset();

@@ -1,4 +1,5 @@
 import 'package:amazon_app/firebase_options.dart';
+import 'package:amazon_app/provider/cart_provider.dart';
 import 'package:amazon_app/provider/product_provider.dart';
 import 'package:amazon_app/vendor/views/screens/main_vendor_screen.dart';
 import 'package:amazon_app/views/buyers/auth/register_screen.dart';
@@ -17,6 +18,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
             create:(_) => ProductProvider()
+        ),
+        ChangeNotifierProvider(
+            create:(_) => CartProvider()
         )
       ],
       child: const MyApp(),
