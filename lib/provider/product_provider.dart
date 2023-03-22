@@ -49,5 +49,10 @@ List<String>? sizeList
     if (sizeList != null) {
       productData['sizeList'] = sizeList;
     }
+    notifyListeners();
+  }
+  clearData() {
+    productData.clear();
+    notifyListeners();
   }
 }

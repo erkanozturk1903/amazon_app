@@ -9,7 +9,12 @@ class AttributesTabScreens extends StatefulWidget {
   State<AttributesTabScreens> createState() => _AttributesTabScreensState();
 }
 
-class _AttributesTabScreensState extends State<AttributesTabScreens> {
+class _AttributesTabScreensState extends State<AttributesTabScreens> with AutomaticKeepAliveClientMixin{
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
   bool _entered = false;
   final TextEditingController _sizeController = TextEditingController();
 
@@ -19,6 +24,7 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _productProvider =
         Provider.of<ProductProvider>(context);
     return Padding(
@@ -49,13 +55,6 @@ class _AttributesTabScreensState extends State<AttributesTabScreens> {
                   child: Container(
                 width: 100,
                 child: TextFormField(
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return 'Beden Giriniz';
-                    }else {
-                      return null;
-                    }
-                  },
                   controller: _sizeController,
                   onChanged: (value) {
                     setState(() {

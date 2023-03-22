@@ -11,7 +11,13 @@ class GeneralScreen extends StatefulWidget {
   State<GeneralScreen> createState() => _GeneralScreenState();
 }
 
-class _GeneralScreenState extends State<GeneralScreen> {
+class _GeneralScreenState extends State<GeneralScreen> with AutomaticKeepAliveClientMixin {
+
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final List<String> _categoryList = [];
 
@@ -43,6 +49,7 @@ class _GeneralScreenState extends State<GeneralScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _productProvider =
         Provider.of<ProductProvider>(context);
     return Scaffold(
@@ -179,4 +186,5 @@ class _GeneralScreenState extends State<GeneralScreen> {
       ),
     );
   }
+
 }

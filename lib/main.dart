@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Brand-Bold'),
-      home: MainVendorScreen(),
+      home: MainScreen(),
       builder: EasyLoading.init(),
     );
   }
