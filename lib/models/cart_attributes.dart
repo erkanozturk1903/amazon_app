@@ -5,7 +5,8 @@ class CartAttributes with ChangeNotifier {
   final String productName;
   final String productId;
   final List imageUrlList;
-  final int quantity;
+   int quantity;
+   int productQuantity;
   final double price;
   final String vendorId;
   final String productSize;
@@ -16,9 +17,18 @@ class CartAttributes with ChangeNotifier {
     required this.productId,
     required this.imageUrlList,
     required this.quantity,
+    required this.productQuantity,
     required this.price,
     required this.vendorId,
     required this.productSize,
     required this.scheduleDate,
   });
+
+  void increase(){
+    quantity++;
+  }
+
+  void decrease(){
+    quantity--;
+  }
 }

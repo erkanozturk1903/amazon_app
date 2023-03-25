@@ -1,5 +1,6 @@
 import 'package:amazon_app/models/cart_attributes.dart';
 import 'package:amazon_app/provider/cart_provider.dart';
+import 'package:amazon_app/utils/show_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -58,7 +59,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Stack(
               children: [
                 Container(
-                  height: 300,
+                  height: 250,
                   width: double.infinity,
                   child: PhotoView(
                     imageProvider: NetworkImage(
@@ -194,16 +195,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: OutlinedButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedSize =
-                                  widget.productData['sizeList'][index];
-                            });
-                            print(_selectedSize);
-                          },
-                          child: Text(
-                            widget.productData['sizeList'][index],
+                        child: Container(
+                          color: _selectedSize ==
+                                  widget.productData['sizeList'][index]
+                              ? Colors.yellow.shade900
+                              : null,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedSize =
+                                    widget.productData['sizeList'][index];
+                              });
+                              print(_selectedSize);
+                            },
+                            child: Text(
+                              widget.productData['sizeList'][index],
+                            ),
                           ),
                         ),
                       );
@@ -218,23 +225,35 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
-          onTap: () {
-            _cartProvider.addProductToCart(
-              widget.productData['productName'],
-              widget.productData['productId'],
-              widget.productData['imageUrlList'],
-              widget.productData['quantity'],
-              widget.productData['productPrice'],
-              widget.productData['vendorId'],
-              _selectedSize!,
-              widget.productData['scheduleDate'],
-            );
-          },
+          onTap: _cartProvider.getCartItem
+                  .containsKey(widget.productData['productId'])
+              ? null
+              : () {
+                  if (_selectedSize == null) {
+                    return showSnack(context, 'Lütfen Beden Seçiniz');
+                  } else {
+                    _cartProvider.addProductToCart(
+                      widget.productData['productName'],
+                      widget.productData['productId'],
+                      widget.productData['imageUrlList'],
+                      1,
+                      widget.productData['quantity'],
+                      widget.productData['productPrice'],
+                      widget.productData['vendorId'],
+                      _selectedSize!,
+                      widget.productData['scheduleDate'],
+                    );
+                    return showSnack(context, '${ widget.productData['productName']} Sepete Eklediniz. ');
+                  }
+                },
           child: Container(
             height: 50,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: Colors.yellow.shade900,
+              color: _cartProvider.getCartItem
+                      .containsKey(widget.productData['productId'])
+                  ? Colors.grey
+                  : Colors.yellow.shade900,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
@@ -250,14 +269,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    'Sepete Ekle',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        letterSpacing: 2),
-                  ),
+                  child: _cartProvider.getCartItem
+                          .containsKey(widget.productData['productId'])
+                      ? Text(
+                          'Sepette',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 2),
+                        )
+                      : Text(
+                          'Sepete Ekle',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 2),
+                        ),
                 ),
               ],
             ),

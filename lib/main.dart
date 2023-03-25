@@ -2,12 +2,14 @@ import 'package:amazon_app/firebase_options.dart';
 import 'package:amazon_app/provider/cart_provider.dart';
 import 'package:amazon_app/provider/product_provider.dart';
 import 'package:amazon_app/vendor/views/screens/main_vendor_screen.dart';
+import 'package:amazon_app/views/buyers/auth/login_screen.dart';
 import 'package:amazon_app/views/buyers/auth/register_screen.dart';
 import 'package:amazon_app/views/buyers/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

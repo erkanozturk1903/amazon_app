@@ -1,10 +1,12 @@
+import 'package:amazon_app/views/buyers/auth/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatelessWidget {
-  const AccountScreen({Key? key}) : super(key: key);
+  AccountScreen({Key? key}) : super(key: key);
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('buyers');
@@ -12,7 +14,6 @@ class AccountScreen extends StatelessWidget {
       future: users.doc(FirebaseAuth.instance.currentUser!.uid).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
         if (snapshot.hasError) {
           return Text("Something went wrong");
         }
@@ -22,7 +23,8 @@ class AccountScreen extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
             appBar: AppBar(
               elevation: 2,
@@ -41,11 +43,15 @@ class AccountScreen extends StatelessWidget {
             ),
             body: Column(
               children: [
-                SizedBox(height: 25,),
+                SizedBox(
+                  height: 25,
+                ),
                 Center(
                   child: CircleAvatar(
                     radius: 64,
-                    backgroundImage: NetworkImage(data['profileImage'],),
+                    backgroundImage: NetworkImage(
+                      data['profileImage'],
+                    ),
                     backgroundColor: Colors.yellow.shade900,
                   ),
                 ),
@@ -77,31 +83,52 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.settings,),
+                  leading: Icon(
+                    Icons.settings,
+                  ),
                   title: Text('Ayarlar'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.phone,),
+                  leading: Icon(
+                    Icons.phone,
+                  ),
                   title: Text('Telefon Numarası'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.credit_card,),
+                  leading: Icon(
+                    Icons.credit_card,
+                  ),
                   title: Text('Kart Bilgileri'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.shopping_cart,),
+                  leading: Icon(
+                    Icons.shopping_cart,
+                  ),
                   title: Text('Siparişlerim'),
+                ),
+                ListTile(
+                  onTap: () async {
+                    await _auth.signOut().whenComplete(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                    });
+                  },
+                  leading: Icon(
+                    Icons.logout,
+                  ),
+                  title: Text('Çıkış Yap'),
                 )
               ],
             ),
           );
         }
 
-        return CircularProgressIndicator();
+        return Center(child: CircularProgressIndicator());
       },
     );
-
-
-
   }
 }

@@ -1,3 +1,4 @@
+import 'package:amazon_app/views/buyers/nav_screen/category_screen.dart';
 import 'package:amazon_app/views/buyers/nav_screen/widgets/home_products.dart';
 import 'package:amazon_app/views/buyers/nav_screen/widgets/main_products_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +19,7 @@ class _CategoryTextState extends State<CategoryText> {
     final Stream<QuerySnapshot> _categoryStream = FirebaseFirestore.instance
         .collection('categories').snapshots();
     return Padding(
-      padding: const EdgeInsets.all(9.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -26,9 +27,7 @@ class _CategoryTextState extends State<CategoryText> {
             'Kategori',
             style: TextStyle(fontSize: 19),
           ),
-
-
-      StreamBuilder<QuerySnapshot>(
+          StreamBuilder<QuerySnapshot>(
         stream: _categoryStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -43,7 +42,7 @@ class _CategoryTextState extends State<CategoryText> {
           }
 
           return Container(
-            height: 40,
+            height: 45,
             child: Row(
               children: [
                 Expanded(
@@ -77,7 +76,9 @@ class _CategoryTextState extends State<CategoryText> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryScreen(),),);
+                  },
                   icon: Icon(
                     Icons.arrow_forward_ios,
                   ),
