@@ -32,145 +32,152 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: _cartProvider.getCartItem.length,
-        itemBuilder: (context, index) {
-          final cartData = _cartProvider.getCartItem.values.toList()[index];
-          return Card(
-            child: SizedBox(
-              height: 170,
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Image.network(
-                      cartData.imageUrlList[0],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      body: _cartProvider.getCartItem.isNotEmpty
+          ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: _cartProvider.getCartItem.length,
+              itemBuilder: (context, index) {
+                final cartData =
+                    _cartProvider.getCartItem.values.toList()[index];
+                return Card(
+                  child: SizedBox(
+                    height: 170,
+                    child: Row(
                       children: [
-                        Text(
-                          cartData.productName,
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2),
-                        ),
-                        Text(
-                          cartData.price.toStringAsFixed(2) + ' ' + 'TL',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                            color: Colors.yellow.shade900,
+                        SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.network(
+                            cartData.imageUrlList[0],
                           ),
                         ),
-                        OutlinedButton(
-                          onPressed: null,
-                          child: Text(
-                            cartData.productSize,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 115,
-                              decoration: BoxDecoration(
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                cartData.productName,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2),
+                              ),
+                              Text(
+                                cartData.price.toStringAsFixed(2) + ' ' + 'TL',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
                                   color: Colors.yellow.shade900,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Row(
+                                ),
+                              ),
+                              OutlinedButton(
+                                onPressed: null,
+                                child: Text(
+                                  cartData.productSize,
+                                ),
+                              ),
+                              Row(
                                 children: [
+                                  Container(
+                                    height: 40,
+                                    width: 115,
+                                    decoration: BoxDecoration(
+                                        color: Colors.yellow.shade900,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: cartData.quantity == 1
+                                              ? null
+                                              : () {
+                                                  _cartProvider
+                                                      .decrement(cartData);
+                                                },
+                                          icon: Icon(
+                                            CupertinoIcons.minus,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          cartData.quantity.toString(),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: cartData.productQuantity ==
+                                                  cartData.quantity
+                                              ? null
+                                              : () {
+                                                  _cartProvider
+                                                      .increment(cartData);
+                                                },
+                                          icon: Icon(
+                                            CupertinoIcons.plus,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   IconButton(
-                                    onPressed: cartData.quantity == 1
-                                        ? null
-                                        : () {
-                                            _cartProvider.decrement(cartData);
-                                          },
+                                    onPressed: () {
+                                      _cartProvider.removeItem(
+                                        cartData.productId,
+                                      );
+                                    },
                                     icon: Icon(
-                                      CupertinoIcons.minus,
-                                      color: Colors.white,
+                                      CupertinoIcons.cart_badge_minus,
                                     ),
-                                  ),
-                                  Text(
-                                    cartData.quantity.toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: cartData.productQuantity ==
-                                            cartData.quantity
-                                        ? null
-                                        : () {
-                                            _cartProvider.increment(cartData);
-                                          },
-                                    icon: Icon(
-                                      CupertinoIcons.plus,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  )
                                 ],
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _cartProvider.removeItem(
-                                  cartData.productId,
-                                );
-                              },
-                              icon: Icon(
-                                CupertinoIcons.cart_badge_minus,
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         )
                       ],
+                    ),
+                  ),
+                );
+              },
+            )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Alışveriş Sepetiniz Boş',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 5),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow.shade900,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Alışverişe Devam Et',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-          );
-        },
-      ),
-      /* body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Alışveriş Sepetiniz Boş',
-              style: TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 5),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width - 40,
-              decoration: BoxDecoration(
-                color: Colors.yellow.shade900,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  'Alışverişe Devam Et',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),*/
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
@@ -188,7 +195,9 @@ class CartScreen extends StatelessWidget {
             height: 50,
             width: double.infinity,
             decoration: BoxDecoration(
-                color:_cartProvider.totalPrice == 0.00 ? Colors.grey : Colors.yellow.shade900,
+                color: _cartProvider.totalPrice == 0.00
+                    ? Colors.grey
+                    : Colors.yellow.shade900,
                 borderRadius: BorderRadius.circular(10)),
             child: Center(
               child: Text(

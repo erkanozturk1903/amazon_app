@@ -1,4 +1,5 @@
 import 'package:amazon_app/views/buyers/auth/login_screen.dart';
+import 'package:amazon_app/views/buyers/inner_screens/edit_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,88 +42,118 @@ class AccountScreen extends StatelessWidget {
                 )
               ],
             ),
-            body: Column(
-              children: [
-                SizedBox(
-                  height: 25,
-                ),
-                Center(
-                  child: CircleAvatar(
-                    radius: 64,
-                    backgroundImage: NetworkImage(
-                      data['profileImage'],
-                    ),
-                    backgroundColor: Colors.yellow.shade900,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 25,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    data['fullName'],
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                  Center(
+                    child: CircleAvatar(
+                      radius: 64,
+                      backgroundImage: NetworkImage(
+                        data['profileImage'],
+                      ),
+                      backgroundColor: Colors.yellow.shade900,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    data['email'],
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      data['fullName'],
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Divider(
-                    thickness: 2,
-                    color: Colors.grey,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      data['email'],
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings,
-                  ),
-                  title: Text('Ayarlar'),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.phone,
-                  ),
-                  title: Text('Telefon Numarası'),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.credit_card,
-                  ),
-                  title: Text('Kart Bilgileri'),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.shopping_cart,
-                  ),
-                  title: Text('Siparişlerim'),
-                ),
-                ListTile(
-                  onTap: () async {
-                    await _auth.signOut().whenComplete(() {
+                  InkWell(
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => EditProfileScreen(userData: data,),
                         ),
                       );
-                    });
-                  },
-                  leading: Icon(
-                    Icons.logout,
+                    },
+                    child: Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width - 200,
+                      decoration: BoxDecoration(
+                        color: Colors.yellow.shade900,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Profili Düzenle',
+                          style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
+                    ),
                   ),
-                  title: Text('Çıkış Yap'),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Divider(
+                      thickness: 2,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.settings,
+                    ),
+                    title: Text('Ayarlar'),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.phone,
+                    ),
+                    title: Text('Telefon Numarası'),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.credit_card,
+                    ),
+                    title: Text('Kart Bilgileri'),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.shopping_cart,
+                    ),
+                    title: Text('Siparişlerim'),
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      await _auth.signOut().whenComplete(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      });
+                    },
+                    leading: Icon(
+                      Icons.logout,
+                    ),
+                    title: Text('Çıkış Yap'),
+                  )
+                ],
+              ),
             ),
           );
         }

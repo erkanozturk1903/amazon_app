@@ -35,7 +35,7 @@ class _BuyerRegisterScreenState extends State<BuyerRegisterScreen> {
       _isLoading = true;
     });
     if (_formKey.currentState!.validate()) {
-      String res = await _authController
+       await _authController
           .signUpUsers(
         email,
         password,

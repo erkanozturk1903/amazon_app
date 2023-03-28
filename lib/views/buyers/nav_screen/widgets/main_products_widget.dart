@@ -6,7 +6,7 @@ class MainProductsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> _productsStream =
-        FirebaseFirestore.instance.collection('products').snapshots();
+        FirebaseFirestore.instance.collection('products').where('approved',isEqualTo: true).snapshots();
     return StreamBuilder<QuerySnapshot>(
       stream: _productsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
